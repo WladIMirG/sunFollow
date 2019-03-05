@@ -22,7 +22,7 @@ function varargout = HMI2(varargin)
 
 % Edit the above text to modify the response to help HMI2
 
-% Last Modified by GUIDE v2.5 01-Nov-2017 21:52:24
+% Last Modified by GUIDE v2.5 13-Feb-2019 18:28:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -98,6 +98,8 @@ yr = scrsz(4)-pos_act(4);
 yp = round(yr/2);
 set(gcf,'Position',[xp yp pos_act(3) pos_act(4)]);
 
+
+
 % --- Executes during object creation, after setting all properties.
 function Bcontinuar_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to Bcontinuar (see GCBO)
@@ -151,29 +153,24 @@ elegirPuerto(hObject, handles);
 
 % --- Executes on button press in Bconectar.
 function Bconectar_Callback(hObject, eventdata, handles)
-global puerto textButtom stop sunSys;
+global puerto textButtom stop;
 if textButtom == "Conectar"
     elegirPuerto(handles.serialPort, handles);
 %     puerto
-    sunSys = conectar(puerto);
+    sunSys = conectar(puerto)
     set(handles.BGdisplay, 'Visible', 'on')
     indicadoresVisible(handles, 'on')
-    textButtom = 'Iniciar';
-    set(handles.serialPort, 'Visible', 'off');
+    textButtom = 'Iniciar'
 elseif textButtom == "Buscar"
-    if (isempty(puerto) || puerto == 'No hay conexiones')%"No hay conexiones")
+    if (isempty(puerto) || puerto == "No hay conexiones")
         elegirPuerto(handles.serialPort, handles);
         puertosCom(handles.serialPort, handles.Bconectar);
     end
 elseif textButtom == "Iniciar"
-    mensaje = recolector(sunSys)
-    b = split(mensaje)
-    b = b{1}
-%     eval("a = py.dict(pyargs("+b+"))")
-%     textButtom = 'Parar'
     
-%     stop = 0
-    %eventdata("Action")
+    textButtom = 'Parar'
+    stop = 0
+    eventdata('Action')
 %     recalc_val()
 elseif textButtom == "Parar"
     if stop == 0
@@ -209,12 +206,12 @@ function Bcontinuar_Callback(hObject, eventdata, handles)
 set(hObject, 'Visible', 'off');
 serialVisible(handles, 'on');
 % handles(1)
-'Este es el callback';%"Este es el callback";
+"Este es el callback";
 
 function elegirPuerto(obj, h)
 global puerto;
 puerto = get(obj, 'String')
-puerto(get(obj, 'Value'))
+% puerto(get(hObject, 'Value'))
 h.metricdata.puerto = puerto;
 
 function serialVisible(h, io)
@@ -252,7 +249,6 @@ set(h.Tpotencia, 'Visible', jo);
 set(h.Tasimut, 'Visible', jo);
 set(h.Televacion, 'Visible', jo);
 set(h.RBgrafica, 'Visible', jo);
-set(h.BParar, 'Visible', jo);
 
 % --- Executes when mainWindow is resized.
 function mainWindow_SizeChangedFcn(hObject, eventdata, handles)
@@ -270,7 +266,6 @@ l1 = 5;
 l2 = 15;
 SizeRecalc(pos_mw, handles.serialPort, 100, l1, 0.25, 0.1);
 SizeRecalc(pos_mw, handles.Bconectar, 100, l2, 0.25, 0.1);
-SizeRecalc(pos_mw, handles.BParar, 100, 5, 0.25, 0.1);
 w = 0.3;
 h = 0.2;
 c2 = 100/1;
@@ -295,6 +290,16 @@ SizeRecalc(pos_mw, handles.Tcorriente, c3, l2, h/2, w);
 SizeRecalc(pos_mw, handles.LBelevacion, c4, l2, h, w);
 SizeRecalc(pos_mw, handles.Televacion, c5, l2, h/2, w);
 SizeRecalc(pos_mw, handles.RBgrafica, c7, l2, h, w);
+
+% handles
+% pos_act = get(handles.Bcontinuar,'Position');
+% xr = pos_mw(3)-pos_mw(3)*0.2
+% xp = round(xr/2);
+% % xp = pos_mw(3)/2 - pos_mw(3)*0.2;
+% yr = pos_mw(4)-pos_mw(4)*0.3
+% yp = round(yr/30);
+% % yp = pos_mw(4)/3 - pos_mw(4)*0.3;
+% set(handles.Bcontinuar,'Position',[xp yp pos_mw(3)*0.2 pos_mw(4)*0.3]);
 
 function SizeRecalc(pos_mw, h, xf, yf, fx, fy)
 % pos_mw  = get(gcf,'Position');
@@ -449,12 +454,3 @@ function Tpotencia_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-% --- Executes on button press in BParar.
-function BParar_Callback(hObject, eventdata, handles)
-% hObject    handle to BParar (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-global sunSys;
-fclose(sunSys)

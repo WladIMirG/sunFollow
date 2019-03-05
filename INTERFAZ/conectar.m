@@ -4,5 +4,5 @@ function [sunSys] = conectar(puerto)
     fopen(sunSys)
     errordlg('Se conecto con exito','Exito');
     pause(1)
-%     fclose(sunSys)
+    fclose(sunSys)
 end
