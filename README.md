@@ -5,6 +5,7 @@ Este es un programa de seguidor solar que esta compuesto por:
 - Un modulo de tarjeta microSD.
 - Un display para arduino.
 - Dos servomotores.
+- Modulo de reloj.
 
 Lo que hace el programa es extraer de una base de datos guardada en una
 microSD los valores de asimut y elevacion de un momento determinado del dia
